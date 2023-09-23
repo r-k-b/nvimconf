@@ -27,16 +27,18 @@
                 else
                   pkgs.lib.last values);
           in f [ ] attrList;
-      in rec {
+
         dependencies = with pkgs;
           [
             #zsh # terminal requires it
           ];
+
         neovim-augmented = recursiveMerge [
           pkgs.neovim-unwrapped
           { buildInputs = dependencies; }
         ];
-        packages.nvimconf = pkgs.wrapNeovim neovim-augmented {
+
+        nvimconf = pkgs.wrapNeovim neovim-augmented {
           viAlias = true;
           vimAlias = true;
           withNodeJs = false;
@@ -65,15 +67,18 @@
             };
           };
         };
-        apps.nvimconf = flake-utils.lib.mkApp {
-          drv = packages.nvimconf;
+
+        nvimconfApp = flake-utils.lib.mkApp {
+          drv = nvimconf;
           name = "nvimconf";
           exePath = "/bin/nvim";
         };
-        packages.default = packages.nvimconf;
-        apps.default = apps.nvimconf;
-        devShell =
-          pkgs.mkShell { buildInputs = [ packages.nvimconf ] ++ dependencies; };
+      in {
+        packages.nvimconf = nvimconf;
+        packages.default = nvimconf;
+        apps.nvimconf = nvimconfApp;
+        apps.default = nvimconfApp;
+        devShell = pkgs.mkShell { buildInputs = [ nvimconf ] ++ dependencies; };
       });
 }
 
