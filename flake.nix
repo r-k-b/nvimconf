@@ -61,6 +61,7 @@
                 editorconfig-vim
                 vim-airline
                 vim-better-whitespace
+                vim-fugitive
                 vim-gitgutter
                 vim-nix
               ];
