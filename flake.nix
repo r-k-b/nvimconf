@@ -44,7 +44,6 @@
           withNodeJs = false;
           withPython3 = false;
           withRuby = false;
-          extraPython3Packages = false;
           extraMakeWrapperArgs =
             ''--prefix PATH : "${pkgs.lib.makeBinPath dependencies}"'';
           configure = {
@@ -82,4 +81,3 @@
         devShell = pkgs.mkShell { buildInputs = [ nvimconf ] ++ dependencies; };
       });
 }
-
